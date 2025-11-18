@@ -48,6 +48,9 @@ import routes from "routes";
 // Vision UI Dashboard React contexts
 import { useVisionUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
+// Goals Context
+import { GoalsProvider } from "context/goalsContext";
+
 export default function App() {
   const [controller, dispatch] = useVisionUIController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
@@ -132,53 +135,57 @@ export default function App() {
     </VuiBox>
   );
 
-  return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={themeRTL}>
-        <CssBaseline />
-        {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand=""
-              brandName="VISION UI FREE"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
-        )}
-        {layout === "vr" && <Configurator />}
-        <Switch>
-          {getRoutes(routes)}
-          <Redirect from="*" to="/dashboard" />
-        </Switch>
-      </ThemeProvider>
-    </CacheProvider>
-  ) : (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {layout === "dashboard" && (
-        <>
-          <Sidenav
-            color={sidenavColor}
-            brand=""
-            brandName="VISION UI FREE"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          <Configurator />
-          {configsButton}
-        </>
+  return (
+    <GoalsProvider>
+      {direction === "rtl" ? (
+        <CacheProvider value={rtlCache}>
+          <ThemeProvider theme={themeRTL}>
+            <CssBaseline />
+            {layout === "dashboard" && (
+              <>
+                <Sidenav
+                  color={sidenavColor}
+                  brand=""
+                  brandName="VISION UI FREE"
+                  routes={routes}
+                  onMouseEnter={handleOnMouseEnter}
+                  onMouseLeave={handleOnMouseLeave}
+                />
+                <Configurator />
+                {configsButton}
+              </>
+            )}
+            {layout === "vr" && <Configurator />}
+            <Switch>
+              {getRoutes(routes)}
+              <Redirect from="*" to="/dashboard" />
+            </Switch>
+          </ThemeProvider>
+        </CacheProvider>
+      ) : (
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {layout === "dashboard" && (
+            <>
+              <Sidenav
+                color={sidenavColor}
+                brand=""
+                brandName="VISION UI FREE"
+                routes={routes}
+                onMouseEnter={handleOnMouseEnter}
+                onMouseLeave={handleOnMouseLeave}
+              />
+              <Configurator />
+              {configsButton}
+            </>
+          )}
+          {layout === "vr" && <Configurator />}
+          <Switch>
+            {getRoutes(routes)}
+            <Redirect from="*" to="/dashboard" />
+          </Switch>
+        </ThemeProvider>
       )}
-      {layout === "vr" && <Configurator />}
-      <Switch>
-        {getRoutes(routes)}
-        <Redirect from="*" to="/dashboard" />
-      </Switch>
-    </ThemeProvider>
+    </GoalsProvider>
   );
 }
