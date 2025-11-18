@@ -50,7 +50,12 @@ import { IoGlobe } from "react-icons/io5";
 import { IoBuild } from "react-icons/io5";
 import { IoWallet } from "react-icons/io5";
 import { IoDocumentText } from "react-icons/io5";
+import { IoTrophy } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
+
+// Context
+import { useGoals } from "context/goalsContext";
+import { calcularRachaActual } from "models/journalModel";
 
 // Data
 import LineChart from "examples/Charts/LineCharts/LineChart";
@@ -64,6 +69,38 @@ function Dashboard() {
   const { gradients } = colors;
   const { cardContent } = gradients;
 
+  // Obtener datos reales
+  const { getResumen, journal } = useGoals();
+  const resumen = getResumen();
+
+  // Calcular progreso general (promedio de todas las metas)
+  const progresoGeneral = Math.round(
+    (resumen.libros.progreso +
+      resumen.ahorros.progreso +
+      resumen.inversiones.progreso +
+      resumen.ejercicio.progreso +
+      resumen.mealPrep.progreso +
+      resumen.journal.progreso +
+      resumen.sueno.progreso) / 7
+  );
+
+  // Contar metas completadas (100%)
+  const metasCompletadas = [
+    resumen.libros,
+    resumen.ahorros,
+    resumen.inversiones,
+    resumen.ejercicio,
+    resumen.mealPrep,
+    resumen.journal,
+    resumen.sueno
+  ].filter(meta => meta.progreso >= 100).length;
+
+  // Días registrados en journal
+  const diasJournal = journal.entradas?.length || 0;
+
+  // Racha actual
+  const rachaActual = calcularRachaActual(journal.entradas || []);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -73,7 +110,7 @@ function Dashboard() {
             <Grid item xs={12} md={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Progreso General", fontWeight: "regular" }}
-                count="0%"
+                count={`${progresoGeneral}%`}
                 percentage={{ color: "info", text: "Año 2026" }}
                 icon={{ color: "info", component: <IoIosRocket size="22px" color="white" /> }}
               />
@@ -81,15 +118,15 @@ function Dashboard() {
             <Grid item xs={12} md={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Metas Completadas" }}
-                count="0/7"
-                percentage={{ color: "success", text: "Aún puedes lograrlo" }}
-                icon={{ color: "info", component: <IoWallet size="22px" color="white" /> }}
+                count={`${metasCompletadas}/7`}
+                percentage={{ color: "success", text: metasCompletadas > 0 ? "¡Sigue así!" : "Aún puedes lograrlo" }}
+                icon={{ color: "info", component: <IoTrophy size="22px" color="white" /> }}
               />
             </Grid>
             <Grid item xs={12} md={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Días Registrados" }}
-                count="0/365"
+                count={`${diasJournal}/365`}
                 percentage={{ color: "warning", text: "Journaling" }}
                 icon={{ color: "info", component: <IoDocumentText size="22px" color="white" /> }}
               />
@@ -97,7 +134,7 @@ function Dashboard() {
             <Grid item xs={12} md={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Racha Actual" }}
-                count="0 días"
+                count={`${rachaActual} día${rachaActual !== 1 ? 's' : ''}`}
                 percentage={{ color: "info", text: "Sigue así" }}
                 icon={{ color: "info", component: <FaShoppingCart size="20px" color="white" /> }}
               />

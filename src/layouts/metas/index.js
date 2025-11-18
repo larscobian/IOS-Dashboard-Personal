@@ -33,6 +33,8 @@ import { useGoals } from "context/goalsContext";
 import BooksTracker from "./components/BooksTracker";
 import SavingsTracker from "./components/SavingsTracker";
 import InvestmentTracker from "./components/InvestmentTracker";
+import ExerciseTracker from "./components/ExerciseTracker";
+import MealPrepTracker from "./components/MealPrepTracker";
 import SleepTracker from "./components/SleepTracker";
 
 function Metas() {
@@ -203,72 +205,14 @@ function Metas() {
               <InvestmentTracker />
             </Grid>
 
-            {/* Meta 4: Ejercicio 3 veces por semana */}
+            {/* Meta 4: Ejercicio 3 veces por semana - COMPONENTE COMPLETO */}
             <Grid item xs={12} md={6}>
-              <Card>
-                <VuiBox p={3}>
-                  <VuiBox display="flex" alignItems="center" mb={2}>
-                    <VuiBox
-                      bgColor="info"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      sx={{ borderRadius: "12px", width: "48px", height: "48px" }}
-                      mr={2}
-                    >
-                      <IoFitness color="#fff" size="24px" />
-                    </VuiBox>
-                    <VuiTypography variant="h5" color="white" fontWeight="bold">
-                      Ejercicio 3x Semana
-                    </VuiTypography>
-                  </VuiBox>
-                  <VuiBox mb={2}>
-                    <VuiTypography variant="button" color="text" fontWeight="regular">
-                      Progreso: {metas.ejercicio.actual} de {metas.ejercicio.objetivo} sesiones
-                    </VuiTypography>
-                  </VuiBox>
-                  <VuiProgress value={metas.ejercicio.progreso} color="warning" />
-                  <VuiBox mt={2}>
-                    <VuiTypography variant="caption" color="text">
-                      Calendario semanal: (Pendiente de implementar)
-                    </VuiTypography>
-                  </VuiBox>
-                </VuiBox>
-              </Card>
+              <ExerciseTracker />
             </Grid>
 
-            {/* Meta 5: Organizar comidas los domingos */}
+            {/* Meta 5: Meal Prep domingos - COMPONENTE COMPLETO */}
             <Grid item xs={12} md={6}>
-              <Card>
-                <VuiBox p={3}>
-                  <VuiBox display="flex" alignItems="center" mb={2}>
-                    <VuiBox
-                      bgColor="info"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      sx={{ borderRadius: "12px", width: "48px", height: "48px" }}
-                      mr={2}
-                    >
-                      <IoRestaurant color="#fff" size="24px" />
-                    </VuiBox>
-                    <VuiTypography variant="h5" color="white" fontWeight="bold">
-                      Meal Prep Domingos
-                    </VuiTypography>
-                  </VuiBox>
-                  <VuiBox mb={2}>
-                    <VuiTypography variant="button" color="text" fontWeight="regular">
-                      Progreso: {metas.mealPrep.actual} de {metas.mealPrep.objetivo} semanas
-                    </VuiTypography>
-                  </VuiBox>
-                  <VuiProgress value={metas.mealPrep.progreso} color="info" />
-                  <VuiBox mt={2}>
-                    <VuiTypography variant="caption" color="text">
-                      Recetas y planificación: (Pendiente de implementar)
-                    </VuiTypography>
-                  </VuiBox>
-                </VuiBox>
-              </Card>
+              <MealPrepTracker />
             </Grid>
 
             {/* Meta 6: Registro diario (Journal) */}
