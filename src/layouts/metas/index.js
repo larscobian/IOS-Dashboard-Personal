@@ -30,7 +30,7 @@ import VuiButton from "components/VuiButton";
 import { useGoals } from "context/goalsContext";
 
 // Components
-import BooksTracker from "./components/BooksTracker";
+import BooksTrackerNew from "./components/BooksTrackerNew";
 import SavingsTracker from "./components/SavingsTracker";
 import InvestmentTracker from "./components/InvestmentTracker";
 import ExerciseTracker from "./components/ExerciseTracker";
@@ -190,9 +190,9 @@ function Metas() {
         {/* Detalles de metas */}
         <VuiBox mb={3}>
           <Grid container spacing={3}>
-            {/* Meta 1: Leer 5 libros - COMPONENTE COMPLETO */}
-            <Grid item xs={12} md={6}>
-              <BooksTracker />
+            {/* Meta 1: Leer libros - COMPONENTE COMPLETO CON PORTADAS */}
+            <Grid item xs={12} md={12}>
+              <BooksTrackerNew />
             </Grid>
 
             {/* Meta 2: Ahorrar $2,000 - COMPONENTE COMPLETO */}

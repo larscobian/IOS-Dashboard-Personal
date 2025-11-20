@@ -4,6 +4,9 @@ import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
+import Slider from "@mui/material/Slider";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton";
 
 // Vision UI Dashboard React components
 import VuiBox from "components/VuiBox";
@@ -26,8 +29,15 @@ import { calcularProgreso } from "models/goalsModel";
 
 function Journal() {
   const { journal, addJournalEntry, deleteJournalEntry } = useGoals();
-  const [formData, setFormData] = useState({ titulo: "", contenido: "" });
+  const [formData, setFormData] = useState({
+    titulo: "",
+    contenido: "",
+    rating: 5,
+    sentimiento: "😊"
+  });
   const [showForm, setShowForm] = useState(true);
+
+  const emociones = ["😊", "😐", "😞", "😄", "😢", "😡", "😴", "😎", "🤔"];
 
   const entradas = journal.entradas || [];
   const diasRegistrados = entradas.length;
@@ -42,10 +52,15 @@ function Journal() {
       return;
     }
 
-    const nuevaEntrada = crearEntrada(formData.titulo, formData.contenido);
+    const nuevaEntrada = {
+      ...crearEntrada(formData.titulo, formData.contenido),
+      rating: formData.rating,
+      sentimiento: formData.sentimiento,
+      notaDelDia: formData.titulo
+    };
     addJournalEntry(nuevaEntrada);
 
-    setFormData({ titulo: "", contenido: "" });
+    setFormData({ titulo: "", contenido: "", rating: 5, sentimiento: "😊" });
     alert("Entrada guardada exitosamente!");
   };
 
@@ -129,6 +144,78 @@ function Journal() {
                         },
                       }}
                     />
+                  </VuiBox>
+
+                  {/* Rating del día */}
+                  <VuiBox mb={3}>
+                    <VuiTypography variant="button" color="white" mb={1}>
+                      ¿Cómo calificas tu día? ({formData.rating}/9)
+                    </VuiTypography>
+                    <Slider
+                      value={formData.rating}
+                      onChange={(e, newValue) => setFormData({ ...formData, rating: newValue })}
+                      min={1}
+                      max={9}
+                      step={1}
+                      marks={[
+                        { value: 1, label: '1' },
+                        { value: 3, label: '3' },
+                        { value: 5, label: '5' },
+                        { value: 7, label: '7' },
+                        { value: 9, label: '9' },
+                      ]}
+                      sx={{
+                        color: '#0075FF',
+                        '& .MuiSlider-markLabel': {
+                          color: '#8392AB',
+                          fontSize: '12px'
+                        },
+                        '& .MuiSlider-thumb': {
+                          backgroundColor: '#0075FF'
+                        }
+                      }}
+                    />
+                  </VuiBox>
+
+                  {/* Selector de emociones */}
+                  <VuiBox mb={3}>
+                    <VuiTypography variant="button" color="white" mb={1}>
+                      ¿Cómo te sentiste hoy?
+                    </VuiTypography>
+                    <ToggleButtonGroup
+                      value={formData.sentimiento}
+                      exclusive
+                      onChange={(e, newSentimiento) => {
+                        if (newSentimiento) {
+                          setFormData({ ...formData, sentimiento: newSentimiento });
+                        }
+                      }}
+                      sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: 1,
+                        '& .MuiToggleButton-root': {
+                          color: 'white',
+                          border: '1px solid #2D2E5F',
+                          '&.Mui-selected': {
+                            backgroundColor: '#0075FF',
+                            border: '2px solid #0075FF',
+                            '&:hover': {
+                              backgroundColor: '#0056CC'
+                            }
+                          },
+                          '&:hover': {
+                            backgroundColor: 'rgba(0, 117, 255, 0.2)'
+                          }
+                        }
+                      }}
+                    >
+                      {emociones.map((emocion) => (
+                        <ToggleButton key={emocion} value={emocion} sx={{ fontSize: '24px' }}>
+                          {emocion}
+                        </ToggleButton>
+                      ))}
+                    </ToggleButtonGroup>
                   </VuiBox>
 
                   <VuiBox mb={2}>
