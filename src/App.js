@@ -24,14 +24,9 @@ import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
-
-// Vision UI Dashboard React components
-import VuiBox from "components/VuiBox";
 
 // Vision UI Dashboard React example components
 import Sidenav from "examples/Sidenav";
-import Configurator from "examples/Configurator";
 
 // Vision UI Dashboard React themes
 import theme from "assets/theme";
@@ -46,14 +41,14 @@ import createCache from "@emotion/cache";
 import routes from "routes";
 
 // Vision UI Dashboard React contexts
-import { useVisionUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { useVisionUIController, setMiniSidenav } from "context";
 
 // Goals Context
 import { GoalsProvider } from "context/goalsContext";
 
 export default function App() {
   const [controller, dispatch] = useVisionUIController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
+  const { miniSidenav, direction, layout, sidenavColor } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
@@ -84,9 +79,6 @@ export default function App() {
     }
   };
 
-  // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-
   // Setting the dir attribute for the body element
   useEffect(() => {
     document.body.setAttribute("dir", direction);
@@ -111,30 +103,6 @@ export default function App() {
       return null;
     });
 
-  const configsButton = (
-    <VuiBox
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="3.5rem"
-      height="3.5rem"
-      bgColor="info"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      right="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="white"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
-    >
-      <Icon fontSize="default" color="inherit">
-        settings
-      </Icon>
-    </VuiBox>
-  );
-
   return (
     <GoalsProvider>
       {direction === "rtl" ? (
@@ -146,16 +114,13 @@ export default function App() {
                 <Sidenav
                   color={sidenavColor}
                   brand=""
-                  brandName="VISION UI FREE"
+                  brandName="PROYECTO 365"
                   routes={routes}
                   onMouseEnter={handleOnMouseEnter}
                   onMouseLeave={handleOnMouseLeave}
                 />
-                <Configurator />
-                {configsButton}
               </>
             )}
-            {layout === "vr" && <Configurator />}
             <Switch>
               {getRoutes(routes)}
               <Redirect from="*" to="/dashboard" />
@@ -170,16 +135,13 @@ export default function App() {
               <Sidenav
                 color={sidenavColor}
                 brand=""
-                brandName="VISION UI FREE"
+                brandName="PROYECTO 365"
                 routes={routes}
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}
               />
-              <Configurator />
-              {configsButton}
             </>
           )}
-          {layout === "vr" && <Configurator />}
           <Switch>
             {getRoutes(routes)}
             <Redirect from="*" to="/dashboard" />
